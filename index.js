@@ -1,7 +1,6 @@
-const bingSearch = require('./bingSearch');
-const openAIAnalysis = require('./openAIAnalysis');
-const fs = require('fs');
-const { Command } = require('commander');
+import { bingSearch } from './bingSearch.js';
+import  openAIAnalysis from './openAIAnalysis.js';
+import { Command } from 'commander';
 
 const program = new Command();
 

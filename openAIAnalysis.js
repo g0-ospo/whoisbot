@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { ModelClient } from "@azure-rest/ai-inference";
-import { AzureKeyCredential } from "@azure/core-auth";
+import  ModelClient from "@azure-rest/ai-inference";
+import  { AzureKeyCredential }  from "@azure/core-auth";
+
+const model = "gpt-4o";
 
 async function openAIAnalysis(contactDetails, bingResults, apiKey) {
   const client = new ModelClient(
@@ -39,4 +41,4 @@ async function openAIAnalysis(contactDetails, bingResults, apiKey) {
   }
 }
 
-module.exports = openAIAnalysis;
+export default openAIAnalysis;

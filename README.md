@@ -46,7 +46,7 @@ To run the bot locally, follow these steps:
 
 4. Run the bot with the contact details and desired output format:
    ```sh
-   node whoisbot.js -c "<contact details>" -f "plain"
+   node index.js -c "<contact details>" -f "plain"
    ```
 
    The available output formats are `plain`, `markdown`, and `pdf`. The default format is `plain`.

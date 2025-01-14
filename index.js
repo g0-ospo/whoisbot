@@ -19,10 +19,14 @@ async function whoisbot(contactDetails, format) {
 
   try {
     const bingResults = await bingSearch(contactDetails, bingApiKey);
-    const analysis = await openAIAnalysis(bingResults, openAiApiKey);
+    const analysis = await openAIAnalysis(contactDetails, bingResults, openAiApiKey);
 
     let output;
     switch (format) {
+      case 'pdf':
+        // Code to generate PDF output
+        output = `PDF output is not implemented yet. Analysis: ${analysis}`;
+        break;
       case 'markdown':
         output = `# Analysis\n\n${analysis}`;
         break;

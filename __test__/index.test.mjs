@@ -25,7 +25,7 @@ describe('whoisbot', () => {
     await whoisbot(contactDetails, 'plain');
 
     expect(bingSearch).toHaveBeenCalledWith(contactDetails, process.env.BING_API_KEY);
-    expect(openAIAnalysis).toHaveBeenCalledWith(bingResults, process.env.OPENAI_API_KEY);
+    expect(openAIAnalysis).toHaveBeenCalledWith(contactDetails, bingResults, process.env.OPENAI_API_KEY);
     expect(consoleSpy).toHaveBeenCalledWith(analysis);
 
     consoleSpy.mockRestore();
@@ -40,7 +40,7 @@ describe('whoisbot', () => {
     await whoisbot(contactDetails, 'markdown');
 
     expect(bingSearch).toHaveBeenCalledWith(contactDetails, process.env.BING_API_KEY);
-    expect(openAIAnalysis).toHaveBeenCalledWith(bingResults, process.env.OPENAI_API_KEY);
+    expect(openAIAnalysis).toHaveBeenCalledWith(contactDetails, bingResults, process.env.OPENAI_API_KEY);
     expect(consoleSpy).toHaveBeenCalledWith(`# Analysis\n\n${analysis}`);
 
     consoleSpy.mockRestore();

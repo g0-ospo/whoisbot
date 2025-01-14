@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Run Who is Bot
-        run: node whoisbot.js "${{ github.event.inputs.contactDetails }}"
+        run: node index.js -c "${{ github.event.inputs.contactDetails }}"
         env:
           BING_API_KEY: ${{ secrets.BING_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

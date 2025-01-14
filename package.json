@@ -8,9 +8,7 @@
     "build": "ncc build index.js -o dist",
     "test": "jest",
     "test-ci": "jest --ci",
-    "start": "node index.js -c \"contact details\" -f \"plain\"",
-    "lint": "eslint .",
-    "pretest": "npm run lint"
+    "start": "node index.js -c \"contact details\" -f \"plain\""
   },
   "keywords": [
     "github-action",

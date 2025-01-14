@@ -1,0 +1,16 @@
+name: "Who Is Bot Action"
+description: "A reusable action to construct analysis and research on a person"
+inputs:
+  contactDetails:
+    description: "The contact details for the person the research should be done on"
+    required: true
+  debug:
+    description: "Enable debug mode to print outputs instead of posting comments."
+    required: false
+    default: "false"
+outputs:
+  summary:
+    description: "The generated analysis on the person"
+runs:
+  using: "node20"
+  main: "dist/index.js"

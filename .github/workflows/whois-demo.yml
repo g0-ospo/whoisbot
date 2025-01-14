@@ -11,19 +11,22 @@ jobs:
   analyze_person:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'
+          node-version: '20.17'
 
       - name: Install dependencies
         run: npm install
 
+      - name: Build action
+        run: npm run build
+
       - name: Run Who is Bot
-        run: node index.js -c "${{ github.event.inputs.contactDetails }}"
+        run: node dist/index.js -c "${{ github.event.inputs.contactDetails }}"
         env:
           BING_API_KEY: ${{ secrets.BING_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

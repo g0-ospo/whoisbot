@@ -29,8 +29,8 @@ To run the bot locally, follow these steps:
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/g0-ospo/whositbot.git
-   cd whositbot
+   git clone https://github.com/g0-ospo/whoisbot.git
+   cd whoisbot
    ```
 
 2. Install the dependencies:
@@ -46,7 +46,7 @@ To run the bot locally, follow these steps:
 
 4. Run the bot with the contact details and desired output format:
    ```sh
-   node whoisbot.js -c "contact details" -f "plain"
+   node whoisbot.js -c "<contact details>" -f "plain"
    ```
 
    The available output formats are `plain`, `markdown`, and `pdf`. The default format is `plain`.

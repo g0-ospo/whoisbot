@@ -109,8 +109,8 @@ jobs:
 
       - name: Commit and Push
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "Niroshan Rajadurai"
+          git config user.email "nirocr@gmail.com"
           git add dist/
           git commit -m "Update dist folder"
           git push origin main

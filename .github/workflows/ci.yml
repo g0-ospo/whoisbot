@@ -82,7 +82,6 @@ jobs:
 
   validate:
     name: Validate
-    needs: analyze
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

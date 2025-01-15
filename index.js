@@ -1,6 +1,8 @@
 import { bingSearch } from './bingSearch.js';
-import  openAIAnalysis from './openAIAnalysis.js';
+import openAIAnalysis from './openAIAnalysis.js';
 import { Command } from 'commander';
+import PDFDocument from 'pdfkit'; // Added import for PDFKit
+import fs from 'fs'; // Added import for filesystem
 
 const program = new Command();
 
@@ -23,8 +25,12 @@ async function whoisbot(contactDetails, format) {
     let output;
     switch (format) {
       case 'pdf':
-        // Code to generate PDF output
-        output = `PDF output is not implemented yet. Analysis: ${analysis}`;
+        const doc = new PDFDocument();
+        const filePath = `./${contactDetails.replace(/\s+/g, '_')}_analysis.pdf`;
+        doc.pipe(fs.createWriteStream(filePath));
+        doc.text(`Analysis Report for ${contactDetails}\n\n${analysis}`);
+        doc.end();
+        output = `PDF report generated at ${filePath}`;
         break;
       case 'markdown':
         output = `# Analysis\n\n${analysis}`;

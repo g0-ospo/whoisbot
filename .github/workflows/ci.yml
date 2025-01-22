@@ -135,6 +135,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           RELEASE_BRANCH="release-$(date +%Y%m%d%H%M%S)"
           git checkout -b "$RELEASE_BRANCH"
+          echo "::set-output name=RELEASE_BRANCH::$RELEASE_BRANCH"
           if [[ -n "$(git status --porcelain dist/)" ]]; then
             git add dist/
             git commit -m "Update dist folder for release"

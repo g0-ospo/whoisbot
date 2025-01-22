@@ -121,9 +121,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      repository: write
       pull-requests: write
-      releases: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4

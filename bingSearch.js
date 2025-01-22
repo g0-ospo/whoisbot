@@ -1,6 +1,26 @@
+/**
+ * Bing Search Integration Module
+ * 
+ * This module interfaces with Bing Web Search API to gather information about individuals
+ * from various web sources. It performs web searches and extracts relevant content
+ * from the top search results, including page content and metadata.
+ * 
+ * @module bingSearch
+ * @requires axios - For making HTTP requests
+ * @requires cheerio - For parsing and extracting content from HTML
+ */
+
 import axios from "axios";
 import { load } from "cheerio";
 
+/**
+ * Performs a Bing search and extracts content from top results
+ * 
+ * @param {string} contactDetails - Search query (name or identifier of the person)
+ * @param {string} apiKey - Bing Search API key
+ * @returns {Promise<string>} Concatenated search results including titles, URLs, descriptions, and page content
+ * @throws {Error} When API call fails or during content extraction
+ */
 export async function bingSearch(contactDetails, apiKey) {
   const url = `https://api.bing.microsoft.com/v7.0/search?q=${encodeURIComponent(contactDetails)}`;
   const headers = { 'Ocp-Apim-Subscription-Key': apiKey };

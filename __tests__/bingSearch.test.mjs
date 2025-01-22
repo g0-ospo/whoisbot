@@ -1,4 +1,25 @@
-// __tests__/bingSearch.test.mjs
+/**
+ * Bing Search Module Tests
+ * 
+ * Comprehensive test suite for the Bing Search functionality:
+ * - Validates search result processing and concatenation
+ * - Tests error handling for API failures
+ * - Verifies page content extraction and cleanup
+ * - Ensures result pagination (max 5 results)
+ * - Tests empty result handling
+ * 
+ * Test Coverage:
+ * - Basic search functionality with mock responses
+ * - Empty search results handling
+ * - Bing API error scenarios
+ * - Page content fetch failures
+ * - Result limit enforcement
+ * 
+ * @requires axios - Mocked for HTTP request testing
+ * @requires bingSearch - Module under test
+ * @requires jest - Testing framework
+ */
+
 import axios from 'axios';
 import { bingSearch } from '../bingSearch.js';
 import { jest } from '@jest/globals';
@@ -14,6 +35,7 @@ describe('bingSearch', () => {
   });
 
   it('should return concatenated search results', async () => {
+    // Tests basic search functionality with mock responses
     const mockBingResponse = {
       data: {
         webPages: {
@@ -55,6 +77,7 @@ describe('bingSearch', () => {
   });
 
   it('should handle empty search results', async () => {
+    // Validates empty result handling
     const mockBingResponse = {
       data: {
         webPages: {
@@ -72,6 +95,7 @@ describe('bingSearch', () => {
   });
 
   it('should handle errors from Bing API', async () => {
+    // Verifies API error handling
     const mockError = new Error('Bing API Error');
     axios.get.mockRejectedValueOnce(mockError);
 
@@ -81,6 +105,7 @@ describe('bingSearch', () => {
   });
 
   it('should handle errors when fetching page content', async () => {
+    // Tests page fetch error scenarios
     const mockBingResponse = {
       data: {
         webPages: {
@@ -113,6 +138,7 @@ describe('bingSearch', () => {
   });
 
   it('should limit results to top 5', async () => {
+    // Ensures pagination and result limiting
     const mockBingResponse = {
       data: {
         webPages: {

@@ -1,3 +1,14 @@
+# WhoisBot CI/CD Workflow
+# 
+# This workflow handles continuous integration and deployment for WhoisBot:
+# 1. Security Analysis: CodeQL scanning for vulnerabilities
+# 2. Validation: Running tests and checks
+# 3. Publishing: Building and releasing new versions
+# 
+# Triggers:
+# - On push to main branch
+# - On pull requests to main branch
+# - Weekly on Monday at 21:15 UTC
 name: "Continuous Integration"
 
 on:
@@ -10,6 +21,10 @@ on:
 
 jobs:
   analyze:
+    # CodeQL Security Analysis
+    # Performs automated code scanning to identify vulnerabilities
+    # - Excludes dist/ directory from analysis
+    # - Runs on ubuntu-latest for most languages
     name: Analyze (${{ matrix.language }})
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
@@ -83,6 +98,10 @@ jobs:
         category: "/language:${{matrix.language}}"
 
   validate:
+    # Test Suite Validation
+    # Runs the test suite to ensure code quality
+    # - Installs dependencies
+    # - Executes test suite in CI mode
     name: Validate
     runs-on: ubuntu-latest
     steps:
@@ -96,12 +115,22 @@ jobs:
         run: npm run test-ci
 
   publish:
+    # Release Publishing
+    # Handles building and publishing new versions
+    # - Only runs on main branch
+    # - Builds distribution bundle
+    # - Commits dist/ changes if any
+    # - Creates version tags
+    # - Requires successful analyze and validate jobs
     name: Publish
     needs: [analyze, validate]
+    if: github.ref == 'refs/heads/main' # Only run on main branch
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
       - name: Install dependencies
         run: npm install
@@ -111,13 +140,26 @@ jobs:
 
       - name: Commit and Push
         run: |
-          git config user.name "Niroshan Rajadurai"
-          git config user.email "nirocr@gmail.com"
-          git add dist/
-          git commit -m "Update dist folder"
-          git push origin main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Configure remote and fetch latest
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git fetch origin main
+          
+          # Check if there are any changes in the dist folder
+          if [[ -n "$(git status --porcelain dist/)" ]]; then
+            git add dist/
+            git commit -m "Update dist folder"
+            git push origin HEAD:main
+          else
+            echo "No changes in dist folder, skipping commit"
+          fi
 
       - name: Tag Release
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(npm version patch)
-          git push origin main --tags
+          git push origin HEAD:main --tags

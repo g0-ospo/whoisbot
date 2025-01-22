@@ -1,10 +1,33 @@
+/**
+ * Azure OpenAI Analysis Module
+ * 
+ * This module interfaces with Azure OpenAI to analyze information about individuals
+ * and generate comprehensive reports. It processes search results and creates
+ * structured insights about communication preferences and professional background.
+ * 
+ * @module openAIAnalysis
+ * @requires dotenv
+ * @requires @azure-rest/ai-inference
+ * @requires @azure/core-auth
+ */
+
 import dotenv from 'dotenv';
 dotenv.config();
-import  ModelClient from "@azure-rest/ai-inference";
-import  { AzureKeyCredential }  from "@azure/core-auth";
+import ModelClient from "@azure-rest/ai-inference";
+import { AzureKeyCredential } from "@azure/core-auth";
 
+/** Model identifier for GPT-4 */
 const model = "gpt-4o";
 
+/**
+ * Analyzes contact details and search results using Azure OpenAI
+ * 
+ * @param {string} contactDetails - Name or identifier of the person to analyze
+ * @param {string} bingResults - Aggregated search results from Bing
+ * @param {string} apiKey - Azure OpenAI API key
+ * @returns {Promise<string>} Analysis results and insights
+ * @throws {Error} When API call fails or returns non-200 status
+ */
 async function openAIAnalysis(contactDetails, bingResults, apiKey) {
   const client = new ModelClient(
     "https://models.inference.ai.azure.com", 

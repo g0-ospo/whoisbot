@@ -1,3 +1,19 @@
+/**
+ * WhoisBot - A tool for gathering and analyzing information about individuals
+ * 
+ * This tool combines Bing Search and Azure OpenAI to create comprehensive reports
+ * about individuals based on publicly available information. It supports multiple
+ * output formats including PDF, Markdown, and plain text.
+ * 
+ * Environment variables required:
+ * - BING_API_KEY: API key for Bing Search
+ * - OPENAI_API_KEY: API key for Azure OpenAI
+ * 
+ * Usage:
+ * node index.js -c "Person Email or Name" [-f <format>]
+ * where format can be: pdf, markdown, plain (default)
+ */
+
 import { bingSearch } from './bingSearch.js';
 import openAIAnalysis from './openAIAnalysis.js';
 import { Command } from 'commander';
@@ -14,6 +30,11 @@ program.parse(process.argv);
 
 const options = program.opts();
 
+/**
+ * Main WhoisBot function that orchestrates the information gathering and analysis
+ * @param {string} contactDetails - Name or identifier of the person to research
+ * @param {string} format - Output format (pdf, markdown, plain)
+ */
 async function whoisbot(contactDetails, format) {
   const bingApiKey = process.env.BING_API_KEY;
   const openAiApiKey = process.env.OPENAI_API_KEY;
@@ -47,6 +68,7 @@ async function whoisbot(contactDetails, format) {
   }
 }
 
+// CLI argument handling
 if (options.contact) {
   whoisbot(options.contact, options.format);
 } else {

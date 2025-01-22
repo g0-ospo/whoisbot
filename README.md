@@ -1,52 +1,93 @@
-# Who is Bot
+# WhoisBot
 
-An Actions workflow for determining information about a person based on contact details provided.
+A GitHub Action and CLI tool for researching individuals using Azure's Bing Search and OpenAI services. Generate comprehensive reports about people to prepare for meetings or collaborations.
 
-## Usage Instructions
+## Features
 
-1. Provide the contact details of the person as input to the workflow.
-2. The workflow will use Azure Bing API to search for the person.
-3. The workflow will use GitHub OpenAI Azure model to analyze the search results.
-4. The detailed analysis of the person will be outputted.
+- Automated web research using Bing Search API
+- AI-powered analysis using Azure OpenAI
+- Multiple output formats (PDF, Markdown, plain text)
+- GitHub Actions integration
+- Command-line interface
 
-## Configuring Azure Bing API
+## GitHub Actions Usage
 
-1. Sign up for an Azure account if you don't have one.
-2. Create a new Bing Search resource in the Azure portal.
-3. Obtain the API key for the Bing Search resource.
-4. Add the API key as a secret in your GitHub repository with the name `BING_API_KEY`.
+You can use WhoisBot directly through GitHub Actions:
 
-## Configuring GitHub OpenAI Azure Model
+1. Go to the "Actions" tab in your repository
+2. Select the "Who is Bot" workflow
+3. Click "Run workflow"
+4. Enter the person's details (name, email, etc.)
+5. The workflow will generate an analysis report
 
-1. Sign up for an Azure account if you don't have one.
-2. Create a new OpenAI resource in the Azure portal.
-3. Obtain the API key for the OpenAI resource.
-4. Add the API key as a secret in your GitHub repository with the name `OPENAI_API_KEY`.
+Example workflow usage:
+```yaml
+name: Research Team Member
+on:
+  workflow_dispatch:
+    inputs:
+      contactDetails:
+        description: 'Contact details of the person'
+        required: true
 
-## Running the Bot Locally
+jobs:
+  analyze_person:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run WhoisBot
+        env:
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node dist/index.js -c "${{ github.event.inputs.contactDetails }}"
+```
 
-To run the bot locally, follow these steps:
+## Local Installation
 
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/g0-ospo/whoisbot.git
-   cd whoisbot
-   ```
+```bash
+git clone https://github.com/g0-ospo/whoisbot.git
+cd whoisbot
+npm install
+```
 
-2. Install the dependencies:
-   ```sh
-   npm install
-   ```
+## Configuration
 
-3. Set the environment variables for the API keys:
-   ```sh
-   export BING_API_KEY=your_bing_api_key
-   export OPENAI_API_KEY=your_openai_api_key
-   ```
+1. Set up Azure Bing Search:
+   - Create a Bing Search resource in Azure
+   - Get your API key
+   - Set as `BING_API_KEY` in environment or secrets
 
-4. Run the bot with the contact details and desired output format:
-   ```sh
-   node index.js -c "<contact details>" -f "plain"
-   ```
+2. Set up Azure OpenAI:
+   - Create an OpenAI resource in Azure
+   - Get your API key
+   - Set as `OPENAI_API_KEY` in environment or secrets
 
-   The available output formats are `plain`, `markdown`, and `pdf`. The default format is `plain`.
+## CLI Usage
+
+```bash
+# Basic usage (plain text output)
+node index.js -c "John Doe"
+
+# Generate PDF report
+node index.js -c "John Doe" -f pdf
+
+# Generate Markdown report
+node index.js -c "John Doe" -f markdown
+```
+
+## Development
+
+```bash
+# Run tests
+npm test
+
+# Run tests in CI environment
+npm run test-ci
+
+# Build distribution
+npm run build
+```
+
+## License
+
+[MIT License](LICENSE)

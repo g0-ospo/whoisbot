@@ -1,4 +1,22 @@
-// __tests__/openAIAnalysis.test.mjs
+/**
+ * Azure OpenAI Analysis Module Tests
+ * 
+ * Comprehensive test suite for the Azure OpenAI integration:
+ * - Validates successful analysis response handling
+ * - Tests API error scenarios and status codes
+ * - Verifies input/output format consistency
+ * - Ensures proper error propagation
+ * 
+ * Test Coverage:
+ * - Successful API responses with content validation
+ * - Error handling for non-200 status codes
+ * - Exception handling during API calls
+ * - Azure OpenAI client configuration
+ * 
+ * @requires jest - Testing framework
+ * @requires ModelClient - Azure OpenAI client (mocked)
+ * @requires AzureKeyCredential - Azure authentication (mocked)
+ */
 
 import { jest } from '@jest/globals';
 import openAIAnalysis from '../openAIAnalysis.js';
@@ -44,6 +62,7 @@ describe('openAIAnalysis', () => {
   });
 
   it('should return the analysis content on successful response', async () => {
+    // Tests successful API interaction and response parsing
     const mockResponse = {
       status: '200',
       body: {
@@ -80,6 +99,7 @@ describe('openAIAnalysis', () => {
   });
 
   it('should throw an error when response status is not 200', async () => {
+    // Validates error handling for non-200 status codes
     const mockError = { message: 'Azure OpenAI Error' };
     const mockResponse = {
       status: 400,
@@ -96,6 +116,7 @@ describe('openAIAnalysis', () => {
   });
 
   it('should handle exceptions thrown during the API call', async () => {
+    // Tests exception propagation from API calls
     const mockException = new Error('Azure OpenAI Error');
     mockPost.mockRejectedValueOnce(mockException);
 

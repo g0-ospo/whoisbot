@@ -117,16 +117,20 @@ jobs:
   publish:
     # Release Publishing
     # Handles building and publishing new versions
+    # - Only runs on main branch
     # - Builds distribution bundle
     # - Commits dist/ changes if any
     # - Creates version tags
     # - Requires successful analyze and validate jobs
     name: Publish
     needs: [analyze, validate]
+    if: github.ref == 'refs/heads/main' # Only run on main branch
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
       - name: Install dependencies
         run: npm install
@@ -139,17 +143,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
+          # Configure remote and fetch latest
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          git fetch origin main
+          
           # Check if there are any changes in the dist folder
           if [[ -n "$(git status --porcelain dist/)" ]]; then
             git add dist/
             git commit -m "Update dist folder"
-            git push origin main
+            git push origin HEAD:main
           else
             echo "No changes in dist folder, skipping commit"
           fi
 
       - name: Tag Release
-        if: success() # Only run if previous steps succeeded
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(npm version patch)
-          git push origin main --tags
+          git push origin HEAD:main --tags

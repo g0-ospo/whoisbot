@@ -17,6 +17,8 @@ on:
   pull_request:
     branches: [ "main" ]
 
+
+
 jobs:
   analyze:
     # CodeQL Security Analysis
@@ -114,9 +116,12 @@ jobs:
 
   release-branch:
     name: Prepare Release Branch
-    needs: validate
+    needs: [analyze, validate]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -158,30 +163,3 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/pulls" \
             -d "$PR_DATA"
-
-  publish:
-    # Release Publishing
-    # Handles building and publishing new versions
-    # - Only runs on main branch
-    # - Builds distribution bundle
-    # - Commits dist/ changes if any
-    # - Creates version tags
-    # - Requires successful analyze and validate jobs
-    name: Publish
-    needs: [analyze, validate]
-    if: github.ref == 'refs/heads/main' # Only run on main branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Fetch all history for all branches and tags
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Project
-        run: npm run build
-
-      - name: "Publish (Placeholder for future release logic)"
-        run: echo "Version bump and tagging now happen in a separate release workflow."
